@@ -9,6 +9,11 @@ const client = new MongoClient(uri);
 
 client.connect().then(() => {
     console.log("Connected to MongoDB!");
+
+    const db = client.db("products");
+    db.collection("drinks").insertOne({name: "Sprite", year: 2025, country: "UK"})
+    .then(() => console.log("A document is inserted successfully!"))
+
 }).catch((err) => console.log("Connection failed", err));
 
 
