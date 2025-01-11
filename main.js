@@ -11,8 +11,11 @@ client.connect().then(() => {
     console.log("Connected to MongoDB!");
 
     const db = client.db("products");
-    db.collection("drinks").insertOne({name: "Sprite", year: 2025, country: "UK"})
-    .then(() => console.log("A document is inserted successfully!"))
+    // db.collection("drinks").insertOne({name: "Sprite", year: 2025, country: "UK"})
+    db.collection("drinks").findOne({country: "UK"})
+        .then((res) => console.log(res.name))
+        .catch((err) => console.error(err))
+        .then(() => console.log("A document is inserted successfully!"))
 
 }).catch((err) => console.log("Connection failed", err));
 
