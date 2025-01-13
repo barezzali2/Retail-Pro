@@ -30,7 +30,7 @@
     }
 
     /* Submit button styles */
-    .product-inputs #submit {
+    .product-inputs .submit {
         width: 50%;
         padding: 10px;
         background-color: #007bff;
@@ -47,6 +47,6 @@
 
 
     /* Hover effect for submit button */
-    .product-inputs #submit:hover {
+    .product-inputs .submit:hover {
         background-color: #0056b3;
     }
