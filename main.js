@@ -1,36 +1,54 @@
-const express = require('express')
+const express = require('express');
 const app = express();
-const path = require('path')
-const port = 3002
-const { MongoClient } = require('mongodb')
+const port = 3002;
+const { MongoClient } = require('mongodb');
 
-const uri = "mongodb://localhost:27017/products";
+app.use(express.json());
+
+const cors = require('cors');
+app.use(cors());
+
+const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 
-// client.connect().then(() => {
-//     console.log("Connected to MongoDB!");
+let db;
+let collection;
 
-//     const db = client.db("products");
-//     // db.collection("drinks").insertOne({name: "Sprite", year: 2025, country: "UK"})
-//     // Promise Chaining --> for fetching/getting data from DB
-//     db.collection("drinks").findOne({country: "UK"})
-//         .then((res) => console.log(res.name))
-//         .catch((err) => console.error(err))
-//         .then(() => console.log("A document is inserted successfully!"))
+// Connect to MongoDB once at booting the process
+async function connectToDb() {
+    try {
+        await client.connect();
+        console.log("Connected to MongoDB!");
+        db = client.db("products");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+    }
+}
 
-// }).catch((err) => console.log("Connection failed", err));
+// Add drink product
+app.post("/addDrinkProduct", async (req, res) => {
+    try {
+        const { name, year, country } = req.body;
+        
+        if (!name || !year || !country) {
+            return res.status(400).send("All fields are required.");
+        }
+        
+        collection = db.collection("drinks");
+        const newProduct = { name, year, country };
+        const result = await collection.insertOne(newProduct);
 
+        console.log("Insert result:", result);
+        res.status(201).send("Product added successfully!");
+    } catch (error) {
+        console.error("Error adding product:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
-
-app.post("/addProduct", (req, res) => {
-    
-
-})
-
-// app.get("/hello", (req, res) => {
-//     res.sendFile(path.join(__dirname, 'hello.html'));
-// })
+// Start server and connect to DB
+connectToDb();
 
 app.listen(port, () => {
-    console.log(`App is listening on port ${port}`);
+    console.log("App is listening on port 3002");
 });
