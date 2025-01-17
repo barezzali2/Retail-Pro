@@ -25,6 +25,30 @@ async function connectToDb() {
     }
 }
 
+
+// Add Dairy product
+app.post("/addDairyProduct", async (req, res) => {
+
+    try {
+        const { name, year, country} = req.body;
+
+        if (!name || !year || !country) {
+            return res.status(400).send("All fields are required.");
+        }
+
+        collection = db.collection("dairy");
+        const newProduct = { name, year, country };
+        const result = await collection.insertOne(newProduct);
+
+        console.log("Insert result:", result);
+        res.status(201).send("Product added successfully!");
+    } catch(error) {
+        console.error("Error adding product:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
 // Add drink product
 app.post("/addDrinkProduct", async (req, res) => {
     try {
@@ -47,26 +71,47 @@ app.post("/addDrinkProduct", async (req, res) => {
 });
 
 
-app.post("/addDairyProduct", async (req, res) => {
-
+// Add fruit product
+app.post("/addFruitProduct", async (req, res) => {
     try {
-        const { name, year, country} = req.body;
-
+        const { name, year, country } = req.body;
+        
         if (!name || !year || !country) {
             return res.status(400).send("All fields are required.");
         }
-
-        collection = db.collection("dairy");
+        
+        collection = db.collection("fruits");
         const newProduct = { name, year, country };
         const result = await collection.insertOne(newProduct);
 
         console.log("Insert result:", result);
         res.status(201).send("Product added successfully!");
-    } catch(error) {
+    } catch (error) {
         console.error("Error adding product:", error);
         res.status(500).send("Internal Server Error");
     }
+});
 
+
+// Add snack product
+app.post("/addSnackProduct", async (req, res) => {
+    try {
+        const { name, year, country } = req.body;
+        
+        if (!name || !year || !country) {
+            return res.status(400).send("All fields are required.");
+        }
+        
+        collection = db.collection("snacks");
+        const newProduct = { name, year, country };
+        const result = await collection.insertOne(newProduct);
+
+        console.log("Insert result:", result);
+        res.status(201).send("Product added successfully!");
+    } catch (error) {
+        console.error("Error adding product:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 // Start server and connect to DB
