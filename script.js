@@ -3,20 +3,40 @@ async function addProducts() {
     const productYear = document.getElementById('year');
     const productCountry = document.getElementById('country');
     const message = document.getElementById('message');
+    const category = document.getElementById("pro-category");
 
     try {
-        const response = await fetch('http://localhost:3002/addDrinkProduct', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: productName.value,
-                year: parseInt(productYear.value),
-                country: productCountry.value,
-            }),
-        });
+        let response;
+        if(category.value == "drinks") {
 
+            response = await fetch('http://localhost:3002/addDrinkProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: productName.value,
+                    year: parseInt(productYear.value),
+                    country: productCountry.value,
+                }),
+            });
+        }
+
+        if(category.value == "dairy") {
+
+            response = await fetch('http://localhost:3002/addDairyProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: productName.value,
+                    year: parseInt(productYear.value),
+                    country: productCountry.value,
+                }),
+            })
+        }
+            
         if(response.ok) {
             console.log("Product is added successfully!");
             message.textContent = "The item " + `"${productName.value}"` + " is added successfully!";
