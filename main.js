@@ -46,6 +46,29 @@ app.post("/addDrinkProduct", async (req, res) => {
     }
 });
 
+
+app.post("/addDairyProduct", async (req, res) => {
+
+    try {
+        const { name, year, country} = req.body;
+
+        if (!name || !year || !country) {
+            return res.status(400).send("All fields are required.");
+        }
+
+        collection = db.collection("dairy");
+        const newProduct = { name, year, country };
+        const result = await collection.insertOne(newProduct);
+
+        console.log("Insert result:", result);
+        res.status(201).send("Product added successfully!");
+    } catch(error) {
+        console.error("Error adding product:", error);
+        res.status(500).send("Internal Server Error");
+    }
+
+});
+
 // Start server and connect to DB
 connectToDb();
 
