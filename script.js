@@ -7,6 +7,23 @@ async function addProducts() {
 
     try {
         let response;
+
+        if(category.value == "dairy") {
+
+            response = await fetch('http://localhost:3002/addDairyProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: productName.value,
+                    year: parseInt(productYear.value),
+                    country: productCountry.value,
+                }),
+            })
+        }
+
+
         if(category.value == "drinks") {
 
             response = await fetch('http://localhost:3002/addDrinkProduct', {
@@ -22,9 +39,25 @@ async function addProducts() {
             });
         }
 
-        if(category.value == "dairy") {
 
-            response = await fetch('http://localhost:3002/addDairyProduct', {
+        if(category.value == "fruits") {
+
+            response = await fetch('http://localhost:3002/addFruitProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: productName.value,
+                    year: parseInt(productYear.value),
+                    country: productCountry.value,
+                }),
+            })
+        }
+
+        if(category.value == "snacks") {
+
+            response = await fetch('http://localhost:3002/addSnackProduct', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,6 +74,7 @@ async function addProducts() {
             console.log("Product is added successfully!");
             message.textContent = "The item " + `"${productName.value}"` + " is added successfully!";
             productName.value =  productYear.value = productCountry.value = "";
+            category.value = "";
         } else {
             const errorText = await response.text();
             message.textContent = "The item failed to add!";
